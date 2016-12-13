@@ -80,7 +80,10 @@ public class Migration extends TransitionFunction
 					c.setValue(ti + 1, ".");
 					return;
 				}
-				else {}
+				
+				else {
+					c.setValue(ti + 1, ".");
+				}
 			}
 		}
 		
