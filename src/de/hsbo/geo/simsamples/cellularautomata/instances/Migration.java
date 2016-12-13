@@ -20,50 +20,52 @@ public class Migration extends TransitionFunction
 	@Override
 	public void step(Cell c, int ti) throws Exception
 	{	
-		// Bekomme die 4 Nachbarn
+		// Get 4 neighbors and choose one randomly
 		List<Cell> neighbors = c.getNeighbors(NeighborhoodIndex.NEIGH_4());
-		
-		// Wähle zufällig eines der 4 Nachbarfelder
 		Random randomizer = new Random();
 		Cell c2 = neighbors.get(randomizer.nextInt(neighbors.size()));
 		
-		// Werte für Zelle und Nachbarzelle
+		double vermehrungsrate = 0.7;
+		double verdraengungsrate = 0.6;
+		double d = Math.random();
+
+		// Get values for cell and neighbor cell
 		String valC = (String) c.getValue(ti);
 		String valC2 = (String) c2.getValue(ti);
 		
 		if (valC != "."){
 			
-			// Wenn gleiche Population
-			//TODO: Vermehrungsrate einbauen
-			if (valC == valC2) {
-				List<Cell> neighbors2 = c2.getNeighbors(NeighborhoodIndex.NEIGH_4());
-				Cell c3 = neighbors2.get(randomizer.nextInt(neighbors2.size()));
-				c3.setValue(ti + 1, valC);		
-				return;
+			// Vermehrung
+			if (valC == valC2){
+				if (d < vermehrungsrate){
+					List<Cell> neighbors2 = c2.getNeighbors(NeighborhoodIndex.NEIGH_4());
+					Cell c3 = neighbors2.get(randomizer.nextInt(neighbors2.size()));
+					c3.setValue(ti + 1, valC);	
+					return;
+				}
+				else {}
 			}
 			
-			// Wenn leeres Feld --> Migration
-			if (valC2 == ".") {
-				// Neues Feld bekommt die gleiche Population
+			// Migration
+			if (valC2 == "."){
+				// Neues Feld bekommt die gleiche Population, altes wird leer
 				c2.setValue(ti + 1, valC);
-				// Altes Feld wird leer
 				c.setValue(ti + 1, ".");
 				return;
 			}
 			
-			//TODO: Verdrängungsrate einbauen
+			// Verdraengung
 			else if (valC2 != valC){
-				//Verdrängungsrate E
-				c2.setValue(ti + 1, valC);
-				c.setValue(ti + 1, ".");
-				return;
+				if (d < verdraengungsrate){
+					c2.setValue(ti + 1, valC);
+					c.setValue(ti + 1, ".");
+					return;
+				}
+				else {}
 			}
 		}
 		
-		else {
-			//do nothing
-			
-		}
+		else {}
 		
 	}
 }
