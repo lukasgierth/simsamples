@@ -16,7 +16,7 @@ public class MigrationExample
 	{
 		// Create automaton consisting of 200x200 cells:
 		CellularAutomaton a = 
-			new RectangularAutomaton(200, 200, new Migration());
+			new RectangularAutomaton(20, 20, new Migration());
 		a.initializeRandomly();
 		
 		// Execute 200 time steps and provide console output:
