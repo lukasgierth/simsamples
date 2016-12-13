@@ -21,6 +21,6 @@ public class MigrationExample
 		
 		// Execute 200 time steps and provide console output:
 		a.enableConsoleDump();
-		a.execute(200);
+		a.execute(10);
 	}
 }
