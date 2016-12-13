@@ -43,18 +43,17 @@ public class Migration extends TransitionFunction
 					
 					List<Cell> neighbors2 = c2.getNeighbors(NeighborhoodIndex.NEIGH_4());
 					Collections.shuffle(neighbors2);
-					int size = neighbors.size();
+					
+					int size = neighbors2.size();
 
-					if ((String) neighbors2.get(0).getValue(ti) == "." && size > 0){
-						neighbors2.get(0).setValue(ti + 1, valC);	
+					for (int i = 0; i < size; i++){
+						
+						if ((String) neighbors2.get(i).getValue(ti) == "." && neighbors2.get(i) != c2){
+							neighbors2.get(i).setValue(ti + 1, valC2);
+							System.out.println("BREAK: "+ i + "   SIZE: "+size);
+							break;
+						}
 					}
-					else if ((String) neighbors2.get(1).getValue(ti) == "." && size > 1){
-						neighbors2.get(1).setValue(ti + 1, valC);	
-					}
-					else if ((String) neighbors2.get(2).getValue(ti) == "." && size > 2){
-						neighbors2.get(2).setValue(ti + 1, valC);	
-					}
-					else {}
 					
 					return;
 				}
