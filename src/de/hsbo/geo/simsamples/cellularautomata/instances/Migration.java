@@ -1,5 +1,7 @@
 package de.hsbo.geo.simsamples.cellularautomata.instances;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -40,22 +42,19 @@ public class Migration extends TransitionFunction
 				if (d < vermehrungsrate){
 					
 					List<Cell> neighbors2 = c2.getNeighbors(NeighborhoodIndex.NEIGH_4());
-					Cell c3a = neighbors2.get(0);
-					Cell c3b = neighbors2.get(1);
-					Cell c3c = neighbors2.get(2);
-					Cell c3d = neighbors2.get(3);
+					Collections.shuffle(neighbors2);
 
-					if ((String) c3a.getValue(ti) == "."){
-						c3a.setValue(ti + 1, valC);	
+					if ((String) neighbors2.get(0).getValue(ti) == "."){
+						neighbors2.get(0).setValue(ti + 1, valC);	
 					}
-					else if ((String) c3b.getValue(ti) == "."){
-						c3b.setValue(ti + 1, valC);	
+					else if ((String) neighbors2.get(1).getValue(ti) == "."){
+						neighbors2.get(1).setValue(ti + 1, valC);	
 					}
-					else if ((String) c3c.getValue(ti) == "."){
-						c3c.setValue(ti + 1, valC);	
+					else if ((String) neighbors2.get(2).getValue(ti) == "."){
+						neighbors2.get(2).setValue(ti + 1, valC);	
 					}
-					else if ((String) c3d.getValue(ti) == "."){
-						c3d.setValue(ti + 1, valC);	
+					else if ((String) neighbors2.get(3).getValue(ti) == "."){
+						neighbors2.get(3).setValue(ti + 1, valC);	
 					}
 					else {}
 					
