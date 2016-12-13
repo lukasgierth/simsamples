@@ -58,10 +58,14 @@ public class Migration extends TransitionFunction
 				c.setValue(ti + 1, ".");
 				return;
 			}
-			// else:
-			c.setValue(ti + 1, ".");
 		}
 		
-		else {}
+		else {
+			// Nachbarfeld ist frei!
+			// Migriere Population auf neues Feld und leere altes Feld
+			c2.setValue(ti+1, valC);
+			c.setValue(ti+1, valC2);
+		}
+		
 	}
 }
