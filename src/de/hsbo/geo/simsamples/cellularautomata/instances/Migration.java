@@ -38,9 +38,27 @@ public class Migration extends TransitionFunction
 			// Vermehrung
 			if (valC == valC2){
 				if (d < vermehrungsrate){
+					
 					List<Cell> neighbors2 = c2.getNeighbors(NeighborhoodIndex.NEIGH_4());
-					Cell c3 = neighbors2.get(randomizer.nextInt(neighbors2.size()));
-					c3.setValue(ti + 1, valC);	
+					Cell c3a = neighbors2.get(0);
+					Cell c3b = neighbors2.get(1);
+					Cell c3c = neighbors2.get(2);
+					Cell c3d = neighbors2.get(3);
+
+					if ((String) c3a.getValue(ti) == "."){
+						c3a.setValue(ti + 1, valC);	
+					}
+					else if ((String) c3b.getValue(ti) == "."){
+						c3b.setValue(ti + 1, valC);	
+					}
+					else if ((String) c3c.getValue(ti) == "."){
+						c3c.setValue(ti + 1, valC);	
+					}
+					else if ((String) c3d.getValue(ti) == "."){
+						c3d.setValue(ti + 1, valC);	
+					}
+					else {}
+					
 					return;
 				}
 				else {}
@@ -48,7 +66,7 @@ public class Migration extends TransitionFunction
 			
 			// Migration
 			if (valC2 == "."){
-				// Neues Feld bekommt die gleiche Population, altes wird leer
+				
 				c2.setValue(ti + 1, valC);
 				c.setValue(ti + 1, ".");
 				return;
@@ -57,6 +75,7 @@ public class Migration extends TransitionFunction
 			// Verdraengung
 			else if (valC2 != valC){
 				if (d < verdraengungsrate){
+					
 					c2.setValue(ti + 1, valC);
 					c.setValue(ti + 1, ".");
 					return;
