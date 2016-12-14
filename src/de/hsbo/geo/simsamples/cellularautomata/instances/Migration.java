@@ -1,6 +1,5 @@
 package de.hsbo.geo.simsamples.cellularautomata.instances;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -9,6 +8,12 @@ import de.hsbo.geo.simsamples.cellularautomata.Cell;
 import de.hsbo.geo.simsamples.cellularautomata.DiscreteStateSet;
 import de.hsbo.geo.simsamples.cellularautomata.NeighborhoodIndex;
 import de.hsbo.geo.simsamples.cellularautomata.TransitionFunction;
+
+/**
+ * Transition functions for "MigrationExample"
+ * 
+ * @author Lukas Gierth, Matthias Hensen
+ */
 
 public class Migration extends TransitionFunction 
 {
