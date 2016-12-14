@@ -42,11 +42,10 @@ public class Migration extends TransitionFunction {
 
 		if (valC != "."){
 			
-			// Get 4 neighbors and choose one randomly
+			// Get 4 neighbors and shuffle them
 			List<Cell> neighbors = c.getNeighbors(NeighborhoodIndex.NEIGH_4());
 			Collections.shuffle(neighbors);
 
-			
 			for (int j = 0; j<neighbors.size(); j++){
 				
 				Cell c2 = neighbors.get(j);
@@ -76,15 +75,14 @@ public class Migration extends TransitionFunction {
 					if (d < v){
 						
 						List<Cell> neighbors2 = c2.getNeighbors(NeighborhoodIndex.NEIGH_4());
+						neighbors2.addAll(neighbors);
 						Collections.shuffle(neighbors2);
-						
-						int size = neighbors2.size();
 	
-						for (int i = 0; i < size; i++){
+						for (int i = 0; i < neighbors2.size(); i++){
 							
 							if ((String) neighbors2.get(i).getValue(ti) == "."){
 								neighbors2.get(i).setValue(ti + 1, valC2);
-								System.out.println("BREAK: "+ i + "   SIZE: "+size);
+								System.out.println("BREAK: "+ i + "   SIZE: "+ neighbors2.size());
 								return;
 							}
 						}
@@ -109,6 +107,7 @@ public class Migration extends TransitionFunction {
 					}
 				}
 			}
+			return;
 		}
 	}
 }
