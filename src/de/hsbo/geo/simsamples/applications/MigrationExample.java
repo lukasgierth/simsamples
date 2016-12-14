@@ -1,6 +1,6 @@
 package de.hsbo.geo.simsamples.applications;
 
-import de.hsbo.geo.simsamples.cellularautomata.CellularAutomaton;
+import de.hsbo.geo.simsamples.cellularautomata.SingleCellularAutomaton;
 import de.hsbo.geo.simsamples.cellularautomata.MigrationAutomaton;
 import de.hsbo.geo.simsamples.cellularautomata.instances.Migration;
 
@@ -15,7 +15,7 @@ public class MigrationExample
 	public static void main(String[] args) throws Exception 
 	{
 		// Create automaton consisting of 200x200 cells:
-		CellularAutomaton a = 
+		SingleCellularAutomaton a = 
 			new MigrationAutomaton(20, 20, new Migration(0.7, 0.7, 0.5, 0.5));
 		a.initializeRandomly();
 		

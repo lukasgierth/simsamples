@@ -1,16 +1,16 @@
 package de.hsbo.geo.simsamples.cellularautomata;
 
-import java.util.Set;
+import java.util.Random;
 
 import de.hsbo.geo.simsamples.common.RandomValueGenerator;
 
 /**
- * Implementation of a universal Cellular Automaton operating on rectangular 
+ * Implementation of a universal Cellular Automaton operating on Migration
  * cellular spaces.
  * 
- * @author Benno Schmidt
+ * @author Lukas Gierth
  */
-public class MigrationAutomaton extends CellularAutomaton 
+public class MigrationAutomaton extends SingleCellularAutomaton 
 {
 	private int nx, ny;
 	
@@ -29,7 +29,7 @@ public class MigrationAutomaton extends CellularAutomaton
 		int nx, 
 		int ny, 
 		StateSet states, 
-		TransitionFunction delta) 
+		SingleTransitionFunction delta) 
 	{
 		this(nx, ny, delta);
 		this.setStateSet(states);  
@@ -48,7 +48,7 @@ public class MigrationAutomaton extends CellularAutomaton
 	public MigrationAutomaton(
 		int nx, 
 		int ny, 
-		TransitionFunction delta) 
+		SingleTransitionFunction delta) 
 	{
 		this.cells = new RectangularSpace(nx, ny);
 		this.nx = nx;
@@ -70,7 +70,8 @@ public class MigrationAutomaton extends CellularAutomaton
 
 		// Then step through time:
 		for (int ti = 0; ti <= numberOfSteps; ti++) {
-			this.step();
+			
+			this.stepSingle();
 
 			if (this.consoleDump) {
 				System.out.println("ti = " + ti + ":"); 
@@ -86,20 +87,29 @@ public class MigrationAutomaton extends CellularAutomaton
 	// Note: The implementations of the following overridden methods have a 
 	// better performance than those offered by the base class.
 
+	
+	public void stepSingle() throws Exception {
+		this.delta.beforeStep(this.ti);
+
+		Cell[][] arr = ((RectangularSpace) this.cells).getCellArray();
+		Random random = new Random();
+		
+		this.delta.step(arr[random.nextInt(this.nx)][random.nextInt(this.ny)], this.ti);
+	}
 	@Override
 	public void step() throws Exception 
 	{
-		this.delta.beforeStep(this.ti); 
+		/*
+		this.delta.beforeStep(this.ti);
 
 		Cell[][] arr = ((RectangularSpace) this.cells).getCellArray();
-		for (int i = 0; i < this.nx; i++) {
-			for (int j = 0; j < this.ny; j++) {
-				this.delta.step(arr[i][j], this.ti); 
-				// Step for a cell, could be implemented as empty function!
-			}
-		}
-		this.delta.step(this.ti); 
-		// Step for automaton, could be implemented as empty function!
+		
+
+		Random random = new Random();
+		
+		this.delta.step(arr[random.nextInt(this.nx)][random.nextInt(this.ny)], this.ti);
+		//this.delta.step(this.ti);
+		 */
 	}
 
 	@Override
@@ -108,13 +118,15 @@ public class MigrationAutomaton extends CellularAutomaton
 		Cell[][] arr = ((RectangularSpace) this.cells).getCellArray();
 		for (int i = 0; i < this.nx; i++) {
 			for (int j = 0; j < this.ny; j++) {
-				if (this.stateSet instanceof DiscreteStateSet) {
-					Set<Object> states = 
-						((DiscreteStateSet) this.stateSet).getAsSet();
-					Object val = RandomValueGenerator.chooseRandomly(states);
-					arr[i][j].setInitialValue(val); 
+				
+				if (this.stateSet instanceof DiscreteStateSet && ((i%2==0 && j%2==0)||(i%2!=0 && j%2!=0))) {
+					Object val = RandomValueGenerator.chooseRandomly("X","O");
+					arr[i][j].setInitialValue(val);
 				}
-				// TODO continuousstatese
+				else if (this.stateSet instanceof DiscreteStateSet){
+						Object val = ".";
+						arr[i][j].setInitialValue(val);
+				}
 			}
 		}
 		this.initialized = true;
@@ -130,8 +142,16 @@ public class MigrationAutomaton extends CellularAutomaton
 		Cell[][] arr = ((RectangularSpace) this.cells).getCellArray();
 		for (int i = 0; i < this.nx; i++) {
 			for (int j = 0; j < this.ny; j++) {
-				Object val = RandomValueGenerator.chooseRandomly(vals);
-				arr[i][j].setInitialValue(val); 
+				
+				if (this.stateSet instanceof DiscreteStateSet && ((i%2==0 && j%2==0)||(i%2!=0 && j%2!=0))) {
+					Object val = RandomValueGenerator.chooseRandomly("X","O");
+					arr[i][j].setInitialValue(val);
+				}
+				else if (this.stateSet instanceof DiscreteStateSet){
+						Object val = ".";
+						arr[i][j].setInitialValue(val);
+				}
+				// TODO continuousstatese
 			}
 		}
 		this.initialized = true;

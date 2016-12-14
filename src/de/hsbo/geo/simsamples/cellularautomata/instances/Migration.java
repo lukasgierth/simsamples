@@ -6,7 +6,7 @@ import java.util.List;
 import de.hsbo.geo.simsamples.cellularautomata.Cell;
 import de.hsbo.geo.simsamples.cellularautomata.DiscreteStateSet;
 import de.hsbo.geo.simsamples.cellularautomata.NeighborhoodIndex;
-import de.hsbo.geo.simsamples.cellularautomata.TransitionFunction;
+import de.hsbo.geo.simsamples.cellularautomata.SingleTransitionFunction;
 
 /**
  * Transition functions for "MigrationExample"
@@ -14,7 +14,7 @@ import de.hsbo.geo.simsamples.cellularautomata.TransitionFunction;
  * @author Lukas Gierth, Matthias Hensen
  */
 
-public class Migration extends TransitionFunction {
+public class Migration extends SingleTransitionFunction {
 	
 	double vX;
 	double vO;
@@ -109,5 +109,7 @@ public class Migration extends TransitionFunction {
 			}
 			return;
 		}
+		c.setValue(ti + 1, "."); 			
+
 	}
 }
