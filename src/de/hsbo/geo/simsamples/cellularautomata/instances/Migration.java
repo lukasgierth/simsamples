@@ -25,22 +25,23 @@ public class Migration extends TransitionFunction
 	}
 
 	@Override
-	public void step(Cell c, int ti) throws Exception
-	{	
-		// Get 4 neighbors and choose one randomly
-		List<Cell> neighbors = c.getNeighbors(NeighborhoodIndex.NEIGH_4());
-		Random randomizer = new Random();
-		Cell c2 = neighbors.get(randomizer.nextInt(neighbors.size()));
+	public void step(Cell c, int ti) throws Exception{
 		
-		double vermehrungsrate = 0.7;
-		double verdraengungsrate = 0.6;
-		double d = Math.random();
-
-		// Get values for cell and neighbor cell
 		String valC = (String) c.getValue(ti);
-		String valC2 = (String) c2.getValue(ti);
-		
+
 		if (valC != "."){
+			
+			// Get 4 neighbors and choose one randomly
+			List<Cell> neighbors = c.getNeighbors(NeighborhoodIndex.NEIGH_4());
+			Collections.shuffle(neighbors);
+			Cell c2 = neighbors.get(0);
+			
+			double vermehrungsrate = 0.7;
+			double verdraengungsrate = 0.6;
+			double d = Math.random();
+	
+			// Get values for cell and neighbor cell
+			String valC2 = (String) c2.getValue(ti);
 			
 			// Vermehrung
 			if (valC == valC2){
@@ -53,7 +54,7 @@ public class Migration extends TransitionFunction
 
 					for (int i = 0; i < size; i++){
 						
-						if ((String) neighbors2.get(i).getValue(ti) == "." && neighbors2.get(i) != c2){
+						if ((String) neighbors2.get(i).getValue(ti) == "."){
 							neighbors2.get(i).setValue(ti + 1, valC2);
 							System.out.println("BREAK: "+ i + "   SIZE: "+size);
 							break;
