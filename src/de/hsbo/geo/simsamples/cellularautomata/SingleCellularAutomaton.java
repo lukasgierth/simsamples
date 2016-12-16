@@ -1,5 +1,6 @@
 package de.hsbo.geo.simsamples.cellularautomata;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -165,13 +166,16 @@ abstract public class SingleCellularAutomaton extends Simulator
 		this.delta.beforeStep(this.ti); 
 		// Step for automaton, could be implemented as empty function!
 
-		List<Cell> arr = this.cells.getCells();
-		
-		this.delta.step(arr.get(0), this.ti);
+		List<Cell> cs = this.cells.getCells();
+		List<Cell> blob = new ArrayList<Cell>(cs);
+		for (Cell c : cs) {	
+			this.delta.step(c, this.ti); 
+			// Step for a cell, could be implemented as empty function!
+		}
 		
 		this.delta.step(this.ti); 
 		// Step for automaton, could be implemented as empty function!
-	}
+		}
 	
 	public String toString() 
 	{

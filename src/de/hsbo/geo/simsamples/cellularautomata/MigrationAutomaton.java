@@ -71,7 +71,7 @@ public class MigrationAutomaton extends SingleCellularAutomaton
 		// Then step through time:
 		for (int ti = 0; ti <= numberOfSteps; ti++) {
 			
-			this.stepSingle();
+			this.step();
 
 			if (this.consoleDump) {
 				System.out.println("ti = " + ti + ":"); 
@@ -87,29 +87,22 @@ public class MigrationAutomaton extends SingleCellularAutomaton
 	// Note: The implementations of the following overridden methods have a 
 	// better performance than those offered by the base class.
 
-	
-	public void stepSingle() throws Exception {
-		this.delta.beforeStep(this.ti);
-
-		Cell[][] arr = ((RectangularSpace) this.cells).getCellArray();
-		Random random = new Random();
-		
-		this.delta.step(arr[random.nextInt(this.nx)][random.nextInt(this.ny)], this.ti);
-	}
 	@Override
 	public void step() throws Exception 
 	{
-		/*
-		this.delta.beforeStep(this.ti);
+		
+		this.delta.beforeStep(this.ti); 
 
 		Cell[][] arr = ((RectangularSpace) this.cells).getCellArray();
-		
-
-		Random random = new Random();
-		
-		this.delta.step(arr[random.nextInt(this.nx)][random.nextInt(this.ny)], this.ti);
-		//this.delta.step(this.ti);
-		 */
+		for (int i = 0; i < this.nx; i++) {
+			for (int j = 0; j < this.ny; j++) {
+				this.delta.step(arr[i][j], this.ti); 
+				// Step for a cell, could be implemented as empty function!
+			}
+		}
+		this.delta.step(this.ti); 
+		// Step for automaton, could be implemented as empty function!
+		 
 	}
 
 	@Override

@@ -110,6 +110,5 @@ public class Migration extends SingleTransitionFunction {
 			return;
 		}
 		c.setValue(ti + 1, "."); 			
-
 	}
 }
