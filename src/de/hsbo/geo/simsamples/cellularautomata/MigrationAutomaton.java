@@ -1,7 +1,5 @@
 package de.hsbo.geo.simsamples.cellularautomata;
 
-import java.util.Random;
-
 import de.hsbo.geo.simsamples.common.RandomValueGenerator;
 
 /**
@@ -10,7 +8,7 @@ import de.hsbo.geo.simsamples.common.RandomValueGenerator;
  * 
  * @author Lukas Gierth
  */
-public class MigrationAutomaton extends SingleCellularAutomaton 
+public class MigrationAutomaton extends CellularAutomaton 
 {
 	private int nx, ny;
 	
@@ -29,7 +27,7 @@ public class MigrationAutomaton extends SingleCellularAutomaton
 		int nx, 
 		int ny, 
 		StateSet states, 
-		SingleTransitionFunction delta) 
+		TransitionFunction delta) 
 	{
 		this(nx, ny, delta);
 		this.setStateSet(states);  
@@ -48,7 +46,7 @@ public class MigrationAutomaton extends SingleCellularAutomaton
 	public MigrationAutomaton(
 		int nx, 
 		int ny, 
-		SingleTransitionFunction delta) 
+		TransitionFunction delta) 
 	{
 		this.cells = new RectangularSpace(nx, ny);
 		this.nx = nx;
@@ -91,16 +89,16 @@ public class MigrationAutomaton extends SingleCellularAutomaton
 	public void step() throws Exception 
 	{
 		
-		this.delta.beforeStep(this.ti); 
+		this.delta.beforeStep(this.ti);
 
 		Cell[][] arr = ((RectangularSpace) this.cells).getCellArray();
 		for (int i = 0; i < this.nx; i++) {
 			for (int j = 0; j < this.ny; j++) {
-				this.delta.step(arr[i][j], this.ti); 
+				this.delta.step(arr[i][j], this.ti);
 				// Step for a cell, could be implemented as empty function!
 			}
 		}
-		this.delta.step(this.ti); 
+		this.delta.step(this.ti);
 		// Step for automaton, could be implemented as empty function!
 		 
 	}

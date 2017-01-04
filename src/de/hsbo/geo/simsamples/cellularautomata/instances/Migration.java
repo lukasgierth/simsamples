@@ -6,7 +6,9 @@ import java.util.List;
 import de.hsbo.geo.simsamples.cellularautomata.Cell;
 import de.hsbo.geo.simsamples.cellularautomata.DiscreteStateSet;
 import de.hsbo.geo.simsamples.cellularautomata.NeighborhoodIndex;
-import de.hsbo.geo.simsamples.cellularautomata.SingleTransitionFunction;
+import de.hsbo.geo.simsamples.cellularautomata.RectangularSpace;
+import de.hsbo.geo.simsamples.cellularautomata.TransitionFunction;
+import de.hsbo.geo.simsamples.common.RandomValueGenerator;
 
 /**
  * Transition functions for "MigrationExample"
@@ -14,7 +16,7 @@ import de.hsbo.geo.simsamples.cellularautomata.SingleTransitionFunction;
  * @author Lukas Gierth, Matthias Hensen
  */
 
-public class Migration extends SingleTransitionFunction {
+public class Migration extends TransitionFunction {
 	
 	double vX;
 	double vO;
@@ -36,8 +38,13 @@ public class Migration extends SingleTransitionFunction {
 	}
 
 	@Override
-	public void step(Cell c, int ti) throws Exception{
+	public void step(int ti) throws Exception{
 		
+		RectangularSpace sp = (RectangularSpace) this.getAutomaton().getCellularSpace();
+		int row = RandomValueGenerator.number(0, sp.numberOfRows() - 1);
+		int column = RandomValueGenerator.number(0, sp.numberOfColumns() - 1);
+			
+	    Cell c = sp.getCell(row, column);
 		String valC = (String) c.getValue(ti);
 
 		if (valC != "."){
