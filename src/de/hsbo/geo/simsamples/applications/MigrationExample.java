@@ -16,11 +16,11 @@ public class MigrationExample
 	{
 		// Create automaton consisting of 200x200 cells:
 		CellularAutomaton a = 
-			new MigrationAutomaton(20, 20, new Migration(0.7, 0.7, 0.5, 0.5));
+			new MigrationAutomaton(10, 10, new Migration(0.7, 0.7, 0.5, 0.5));
 		a.initializeRandomly();
 		
 		// Execute 200 time steps and provide console output:
 		a.enableConsoleDump();
-		a.execute(100);
+		a.execute(200);
 	}
 }

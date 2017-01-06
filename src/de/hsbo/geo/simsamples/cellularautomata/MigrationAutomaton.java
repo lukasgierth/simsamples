@@ -6,7 +6,7 @@ import de.hsbo.geo.simsamples.common.RandomValueGenerator;
  * Implementation of a universal Cellular Automaton operating on Migration
  * cellular spaces.
  * 
- * @author Lukas Gierth
+ * @author Lukas Gierth, Matthias Hensen
  */
 public class MigrationAutomaton extends CellularAutomaton 
 {
