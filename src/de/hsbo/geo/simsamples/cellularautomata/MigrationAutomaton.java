@@ -73,8 +73,28 @@ public class MigrationAutomaton extends CellularAutomaton
 
 			if (this.consoleDump) {
 				System.out.println("ti = " + ti + ":"); 
-				((RectangularSpace) this.getCellularSpace()).dump(this.ti); 
+				((RectangularSpace) this.getCellularSpace()).dump(this.ti);
 			}
+			
+			int countX = 0;
+			int countO = 0;
+			int countP = 0;
+			 
+			Cell[][] arr =((RectangularSpace) this.getCellularSpace()).getCellArray();
+			for (int i = 0; i < this.nx; i++) {
+				for (int j = 0; j < this.ny; j++) {
+					if (arr[i][j].getValue(ti) == "X")
+						countX ++;
+					if (arr[i][j].getValue(ti) == "O")
+						countO ++;
+					if (arr[i][j].getValue(ti) == ".")
+						countP ++;
+				}
+			}
+			
+			 System.out.println("Größe der Population X: " + countX + " Zellen\n"+
+						"Größe der Population O: " + countO + " Zellen\n"+
+						"Anzahl leerer Zellen: "+ countP + " Zellen\n\n");
 			
 			this.ti++;
 		}
