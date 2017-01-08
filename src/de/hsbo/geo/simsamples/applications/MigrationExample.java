@@ -13,7 +13,7 @@ public class MigrationExample
 {
 	
 	private static String filelocation ="/home/lukas/migration/";
-	private static int timesteps = 250;
+	private static int timesteps = 5000;
 
 	public static void main(String[] args) throws Exception 
 	{
@@ -23,7 +23,7 @@ public class MigrationExample
 		 */
 		
 		MigrationAutomaton a = 
-			new MigrationAutomaton(100, 100, new Migration(0.7, 0.7, 0.5, 0.5));
+			new MigrationAutomaton(50, 50, new Migration(0.7, 0.7, 0.5, 0.5));
 		
 		//a.enableConsoleDump();
 		a.initializeRandomly();

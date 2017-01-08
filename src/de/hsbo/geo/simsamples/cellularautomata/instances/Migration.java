@@ -42,12 +42,19 @@ public class Migration extends TransitionFunction {
 		
 		RectangularSpace sp = (RectangularSpace) this.getAutomaton().getCellularSpace();
 		int row = RandomValueGenerator.number(0, sp.numberOfRows() - 1);
-		int column = RandomValueGenerator.number(0, sp.numberOfColumns() - 1);
-			
+		int column = RandomValueGenerator.number(0, sp.numberOfColumns() - 1);	
 	    Cell c = sp.getCell(row, column);
 		String valC = (String) c.getValue(ti);
+		
+		while (valC == "."){
+			row = RandomValueGenerator.number(0, sp.numberOfRows() - 1);
+			column = RandomValueGenerator.number(0, sp.numberOfColumns() - 1);
+			c = sp.getCell(row, column);
+			valC = (String) c.getValue(ti);
+		}
+		
 
-		if (valC != "."){
+		//if (valC != "."){
 			
 			// Get 4 neighbors and shuffle them
 			List<Cell> neighbors = c.getNeighbors(NeighborhoodIndex.NEIGH_4());
@@ -115,7 +122,8 @@ public class Migration extends TransitionFunction {
 				}
 			}
 			return;
-		}
-		c.setValue(ti + 1, "."); 			
+			
+		//}
+		//c.setValue(ti + 1, "."); 			
 	}
 }
