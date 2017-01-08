@@ -89,7 +89,7 @@ public class Migration extends TransitionFunction {
 							
 							if ((String) neighbors2.get(i).getValue(ti) == "."){
 								neighbors2.get(i).setValue(ti + 1, valC2);
-								System.out.println("BREAK: "+ i + "   SIZE: "+ neighbors2.size());
+								//System.out.println("BREAK: "+ i + "   SIZE: "+ neighbors2.size());
 								return;
 							}
 						}

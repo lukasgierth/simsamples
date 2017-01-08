@@ -1,5 +1,16 @@
 package de.hsbo.geo.simsamples.cellularautomata;
 
+import java.awt.BorderLayout;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.net.URL;
+
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
 import de.hsbo.geo.simsamples.common.RandomValueGenerator;
 
 /**
@@ -11,6 +22,9 @@ import de.hsbo.geo.simsamples.common.RandomValueGenerator;
 public class MigrationAutomaton extends CellularAutomaton 
 {
 	private int nx, ny;
+	private boolean IMAGES;
+	private String location;
+	private int img_counter = 0;
 	
 
 	/**
@@ -92,9 +106,12 @@ public class MigrationAutomaton extends CellularAutomaton
 				}
 			}
 			
-			 System.out.println("Größe der Population X: " + countX + " Zellen\n"+
+			if (this.consoleDump == true){
+				System.out.println("Größe der Population X: " + countX + " Zellen\n"+
 						"Größe der Population O: " + countO + " Zellen\n"+
 						"Anzahl leerer Zellen: "+ countP + " Zellen\n\n");
+			
+			}
 			
 			this.ti++;
 		}
@@ -119,6 +136,15 @@ public class MigrationAutomaton extends CellularAutomaton
 			}
 		}
 		this.delta.step(this.ti);
+		
+		/*
+		 * Make screenshot every 10 steps and last image
+		 */
+		if (this.IMAGES == true && (this.ti % 10 == 0 || this.ti == this.numberOfSteps )){
+			save_image(location + img_counter);
+			img_counter ++;
+		}
+	
 		// Step for automaton, could be implemented as empty function!
 		 
 	}
@@ -179,4 +205,84 @@ public class MigrationAutomaton extends CellularAutomaton
 		}
 		this.initialized = true;
 	}
+	
+	
+	 /*
+	  *  Addition
+	  *  Later integrate into CellularAutomaton???
+	  *  
+	  *  
+	  *  
+	  *  
+	  *  
+	  *  
+	  *  
+	  */
+	
+	/*
+	 * Image Writer
+	 */
+	public void write_buffer_image (Graphics2D plot) throws Exception  {
+		Cell[][] arr =((RectangularSpace) this.getCellularSpace()).getCellArray();
+		for (int i = 0; i < this.nx; i++) {
+			for (int j = 0; j < this.ny; j++) {
+
+	     if (arr[i][j].getValue(ti) == "X") plot.setColor(new java.awt.Color( 255, 0, 0)); else
+	     if (arr[i][j].getValue(ti) == "O") plot.setColor(new java.awt.Color(0, 0, 255)); else
+	     if (arr[i][j].getValue(ti) == ".") plot.setColor(new java.awt.Color(220, 220, 220)); else
+	     plot.setColor(new java.awt.Color(0, 0, 0));
+	     plot.fillRect(j, i, 1, 1);
+	     
+			}
+		}
+	 }
+
+	
+	public void save_buffer_image (String filename) throws Exception {
+		 BufferedImage img = new BufferedImage(this.nx,this.ny,BufferedImage.TYPE_INT_ARGB);
+		 write_buffer_image(img.createGraphics());
+	  
+		 int SCALE=6;
+		 BufferedImage bi = new BufferedImage(SCALE * img.getWidth(null),
+                                             SCALE * img.getHeight(null),
+                                             BufferedImage.TYPE_INT_ARGB);
+
+		 Graphics2D grph = (Graphics2D) bi.getGraphics();
+		 grph.scale(SCALE, SCALE);
+
+        // everything drawn with grph from now on will get scaled.
+
+		 grph.drawImage(img, 0, 0, null);
+		 grph.dispose();
+
+		 	try {
+			   ImageIO.write(bi, "png", new File(filename +".png"));
+			   } catch (Exception ex) {
+			     throw new Exception("Save image failed!");
+			   }
+	   
+	 		}
+
+	 public void save_image (String filename) {
+	   try {
+	     save_buffer_image(filename);
+	   } catch (Exception ex) {
+	     System.exit(1);
+	   }
+	 }
+	 
+	 
+	/*
+	 * Set location and images==true
+	 */
+	 
+	 public void setLocation(String loc){
+		 	this.location = loc;
+	 }
+	 public void setImage(boolean mode) {
+			this.IMAGES = mode;
+		}
+	 public void enableImages() {
+			this.setImage(true);
+		}
 }

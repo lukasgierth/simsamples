@@ -1,6 +1,5 @@
 package de.hsbo.geo.simsamples.applications;
 
-import de.hsbo.geo.simsamples.cellularautomata.CellularAutomaton;
 import de.hsbo.geo.simsamples.cellularautomata.MigrationAutomaton;
 import de.hsbo.geo.simsamples.cellularautomata.instances.Migration;
 
@@ -12,15 +11,24 @@ import de.hsbo.geo.simsamples.cellularautomata.instances.Migration;
  */
 public class MigrationExample 
 {
+	
+	private static String filelocation ="/home/lukas/migration/";
+	private static int timesteps = 250;
+
 	public static void main(String[] args) throws Exception 
 	{
-		// Create automaton consisting of 200x200 cells:
-		CellularAutomaton a = 
-			new MigrationAutomaton(10, 10, new Migration(0.7, 0.7, 0.5, 0.5));
-		a.initializeRandomly();
+		/* Create automaton consisting of 200x200 cells:
+		 * 
+		 * vX, v0, eX, e0
+		 */
 		
-		// Execute 200 time steps and provide console output:
-		a.enableConsoleDump();
-		a.execute(200);
+		MigrationAutomaton a = 
+			new MigrationAutomaton(100, 100, new Migration(0.7, 0.7, 0.5, 0.5));
+		
+		//a.enableConsoleDump();
+		a.initializeRandomly();
+		a.enableImages();
+		a.setLocation(filelocation);
+		a.execute(timesteps);		
 	}
 }
