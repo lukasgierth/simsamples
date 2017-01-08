@@ -1,15 +1,10 @@
 package de.hsbo.geo.simsamples.cellularautomata;
 
-import java.awt.BorderLayout;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.net.URL;
 
 import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 import de.hsbo.geo.simsamples.common.RandomValueGenerator;
 
@@ -141,7 +136,8 @@ public class MigrationAutomaton extends CellularAutomaton
 		 * Make screenshot every 10 steps and last image
 		 */
 		if (this.IMAGES == true && (this.ti % 10 == 0 || this.ti == this.numberOfSteps )){
-			save_image(location + img_counter);
+			String filename = String.format("%06d", img_counter);
+			save_image(location + filename);
 			img_counter ++;
 		}
 	
