@@ -102,9 +102,9 @@ public class MigrationAutomaton extends CellularAutomaton
 			}
 			
 			if (this.consoleDump == true){
-				System.out.println("Größe der Population X: " + countX + " Zellen\n"+
-						"Größe der Population O: " + countO + " Zellen\n"+
-						"Anzahl leerer Zellen: "+ countP + " Zellen\n\n");
+				System.out.println("Größe der Population X: " + countX + " Zellen| " + (countX/(nx*ny)*100) + " %\n"+
+						"Größe der Population O: " + countO + " Zellen| " + (countO/(nx*ny)*100)+" %\n"+
+						"Anzahl leerer Zellen: "+ countP + " Zellen| " +(countP/(nx*ny)*100)+" %\n\n");
 			
 			}
 			
