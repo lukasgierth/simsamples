@@ -19,11 +19,11 @@ public class MigrationExample
 	{
 		/* Create automaton consisting of 200x200 cells:
 		 * 
-		 * vX, v0, eX, e0
+		 * vX, eX, v0, e0
 		 */
 		
 		MigrationAutomaton a = 
-			new MigrationAutomaton(100, 100, new Migration(0.7, 0.7, 0.3, 0.3));
+			new MigrationAutomaton(100, 100, new Migration(1, 0, 1, 0));
 		
 		//a.enableConsoleDump();
 		a.initializeRandomly();
