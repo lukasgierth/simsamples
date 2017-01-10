@@ -3,6 +3,8 @@ package de.hsbo.geo.simsamples.cellularautomata;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
@@ -17,10 +19,10 @@ import de.hsbo.geo.simsamples.common.RandomValueGenerator;
 public class MigrationAutomaton extends CellularAutomaton 
 {
 	private int nx, ny;
-	private boolean IMAGES;
-	private String location;
-	private int img_counter = 0;
-	
+	private boolean IMAGEDUMP;
+	private String LOCATION;
+	private int IMG_RATE;
+	private int IMG_SCALE;
 
 	/**
 	 * Constructor
@@ -75,42 +77,43 @@ public class MigrationAutomaton extends CellularAutomaton
 			this.initialize();
 		}
 
-		// Then step through time:
+		
+			// Then step through time:
 		for (int ti = 0; ti <= numberOfSteps; ti++) {
-			
+
 			this.step();
 
 			if (this.consoleDump) {
-				System.out.println("ti = " + ti + ":"); 
+				System.out.println("ti = " + ti + ":");
 				((RectangularSpace) this.getCellularSpace()).dump(this.ti);
 			}
-			
+
 			int countX = 0;
 			int countO = 0;
 			int countP = 0;
-			 
-			Cell[][] arr =((RectangularSpace) this.getCellularSpace()).getCellArray();
+
+			Cell[][] arr = ((RectangularSpace) this.getCellularSpace()).getCellArray();
 			for (int i = 0; i < this.nx; i++) {
 				for (int j = 0; j < this.ny; j++) {
 					if (arr[i][j].getValue(ti) == "X")
-						countX ++;
+						countX++;
 					if (arr[i][j].getValue(ti) == "O")
-						countO ++;
+						countO++;
 					if (arr[i][j].getValue(ti) == ".")
-						countP ++;
+						countP++;
 				}
 			}
-			
-			if (this.consoleDump == true){
-				System.out.println("Größe der Population X: " + countX + " Zellen| " + (countX/(nx*ny)*100) + " %\n"+
-						"Größe der Population O: " + countO + " Zellen| " + (countO/(nx*ny)*100)+" %\n"+
-						"Anzahl leerer Zellen: "+ countP + " Zellen| " +(countP/(nx*ny)*100)+" %\n\n");
-			
-			}
-			
+
+			if (this.consoleDump == true) {
+				System.out.println("Größe der Population X: " + countX + " Zellen| " + (countX / (nx * ny) * 100)
+						+ " %\n" + "Größe der Population O: " + countO + " Zellen| " + (countO / (nx * ny) * 100)
+						+ " %\n" + "Anzahl leerer Zellen: " + countP + " Zellen| " + (countP / (nx * ny) * 100)
+						+ " %\n\n");
+
+			}			
 			this.ti++;
 		}
-		
+
 		this.afterExecute();
 	}
 
@@ -133,12 +136,11 @@ public class MigrationAutomaton extends CellularAutomaton
 		this.delta.step(this.ti);
 		
 		/*
-		 * Make screenshot every 10 steps and last image
+		 * Make screenshot every n steps and last image
 		 */
-		if (this.IMAGES == true && (this.ti % 10 == 0 || this.ti == this.numberOfSteps )){
-			String filename = String.format("%06d", img_counter);
-			save_image(location + filename);
-			img_counter ++;
+		if (this.IMAGEDUMP == true && (this.ti % this.IMG_RATE == 0 || this.ti == this.numberOfSteps )){
+			String filename = String.format("%06d", this.ti);
+			save_image(LOCATION + filename);
 		}
 	
 		// Step for automaton, could be implemented as empty function!
@@ -202,15 +204,73 @@ public class MigrationAutomaton extends CellularAutomaton
 		this.initialized = true;
 	}
 	
+	/*
+	 * 
+	 */
+	public void createCity(int startX, int startY, int length, int height, String population) throws Exception
+	{
+		if (population == "X" || population == "O"){
+			if ((startX+length) < this.nx && (startY+height) < this.ny){
+				Cell[][] arr = ((RectangularSpace) this.cells).getCellArray();
+				for (int i = startX; i <= startX+length; i++) {
+					for (int j = startY; j <= startY+height; j++) {
+						arr[i][j].setInitialValue(population);
+					}
+				}
+			}
+			
+			else{
+				System.out.println("City out of bounds\nSet default city 5x5 bottomright");
+				
+				Cell[][] arr = ((RectangularSpace) this.cells).getCellArray();
+				for (int i = (this.nx-10); i <=(this.nx-5) ; i++) {
+					for (int j = (this.ny-10); j <= (this.ny-5); j++) {
+						arr[i][j].setInitialValue(population);
+					}
+				}
+			}
+		}
+		
+		else {
+			System.out.println("POPULATION "+population + " UNKNOW");
+		}
+		
+		this.initialized = true;	
+	}
+	
+	/*
+	 * 
+	 */
+	public void createBarrier(int startX, int startY, int length, int height) throws Exception
+	{	
+		if ((startX+length) < this.nx && (startY+height) < this.ny){
+			Cell[][] arr = ((RectangularSpace) this.cells).getCellArray();
+			for (int i = startX; i <= startX+length; i++) {
+				for (int j = startY; j <= startY+height; j++) {
+					arr[i][j].setInitialValue("B");
+				}
+			}
+		}
+		
+		else{
+			System.out.println("Barrier out of bounds\nSet default barrier 10x10 centered");
+			
+			Cell[][] arr = ((RectangularSpace) this.cells).getCellArray();
+			for (int i = (this.nx/2-5); i <= (this.nx/2+5); i++) {
+				for (int j = (this.ny/2-5); j <= (this.ny/2+5); j++) {
+					arr[i][j].setInitialValue("B");
+				}
+			}
+		}
+		
+		this.initialized = true;
+
+	}
+	
 	
 	 /*
 	  *  Addition
 	  *  Later integrate into CellularAutomaton???
-	  *  
-	  *  
-	  *  
-	  *  
-	  *  
 	  *  
 	  *  
 	  */
@@ -226,6 +286,7 @@ public class MigrationAutomaton extends CellularAutomaton
 	     if (arr[i][j].getValue(ti) == "X") plot.setColor(new java.awt.Color( 255, 0, 0)); else
 	     if (arr[i][j].getValue(ti) == "O") plot.setColor(new java.awt.Color(0, 0, 255)); else
 	     if (arr[i][j].getValue(ti) == ".") plot.setColor(new java.awt.Color(220, 220, 220)); else
+		 if (arr[i][j].getValue(ti) == "B") plot.setColor(new java.awt.Color(0, 0, 0)); else
 	     plot.setColor(new java.awt.Color(0, 0, 0));
 	     plot.fillRect(j, i, 1, 1);
 	     
@@ -238,13 +299,13 @@ public class MigrationAutomaton extends CellularAutomaton
 		 BufferedImage img = new BufferedImage(this.nx,this.ny,BufferedImage.TYPE_INT_ARGB);
 		 write_buffer_image(img.createGraphics());
 	  
-		 int SCALE=6;
-		 BufferedImage bi = new BufferedImage(SCALE * img.getWidth(null),
-                                             SCALE * img.getHeight(null),
+		 //int scale=this.IMG_SCALE;
+		 BufferedImage bi = new BufferedImage(this.IMG_SCALE * img.getWidth(null),
+                                             this.IMG_SCALE * img.getHeight(null),
                                              BufferedImage.TYPE_INT_ARGB);
 
 		 Graphics2D grph = (Graphics2D) bi.getGraphics();
-		 grph.scale(SCALE, SCALE);
+		 grph.scale(this.IMG_SCALE, this.IMG_SCALE);
 
         // everything drawn with grph from now on will get scaled.
 
@@ -267,18 +328,15 @@ public class MigrationAutomaton extends CellularAutomaton
 	   }
 	 }
 	 
-	 
 	/*
-	 * Set location and images==true
-	 */
-	 
-	 public void setLocation(String loc){
-		 	this.location = loc;
+	 * Set location and enable ImageDump
+	*/
+	 public void setLocation(String loc) {
+		 this.LOCATION = loc;
 	 }
-	 public void setImage(boolean mode) {
-			this.IMAGES = mode;
-		}
-	 public void enableImages() {
-			this.setImage(true);
-		}
+	 public void enableImageDump(int rate, int scale) {
+		 this.IMAGEDUMP = true;
+		 this.IMG_RATE = rate;
+		 this.IMG_SCALE = scale;
+	 }
 }

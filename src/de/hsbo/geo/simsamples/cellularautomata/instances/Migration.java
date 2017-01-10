@@ -33,8 +33,8 @@ public class Migration extends TransitionFunction {
 	@Override
 	public void defineStates() {
 		
-		// Define states: blank, population X, population Y
-		this.states = new DiscreteStateSet(".", "X", "O");
+		// Define states: blank, population X, population Y, barrier B
+		this.states = new DiscreteStateSet(".", "X", "O", "B");
 	}
 
 	@Override
@@ -46,84 +46,81 @@ public class Migration extends TransitionFunction {
 	    Cell c = sp.getCell(row, column);
 		String valC = (String) c.getValue(ti);
 		
-		while (valC == "."){
+		while (valC == "." || valC == "B"){
 			row = RandomValueGenerator.number(0, sp.numberOfRows() - 1);
 			column = RandomValueGenerator.number(0, sp.numberOfColumns() - 1);
 			c = sp.getCell(row, column);
 			valC = (String) c.getValue(ti);
 		}
-		
-
-		//if (valC != "."){
 			
-			// Get 4 neighbors and shuffle them
-			List<Cell> neighbors = c.getNeighbors(NeighborhoodIndex.NEIGH_4());
-			Collections.shuffle(neighbors);
+		// Get 4 neighbors and shuffle them
+		List<Cell> neighbors = c.getNeighbors(NeighborhoodIndex.NEIGH_4());
+		Collections.shuffle(neighbors);
 
-			for (int j = 0; j<neighbors.size(); j++){
-				
-				Cell c2 = neighbors.get(j);
-				String valC2 = (String) c2.getValue(ti);
+		for (int j = 0; j < neighbors.size(); j++) {
+
+			Cell c2 = neighbors.get(j);
+			String valC2 = (String) c2.getValue(ti);
+
+			double d = Math.random();
+
+			// Migration
+			if (valC2 == ".") {
+
+				c2.setValue(ti + 1, valC);
+				c.setValue(ti + 1, valC2);
+				return;
+			}
 			
-				double d = Math.random();
-				
-				// Migration
-				if (valC2 == "."){
-					
-					c2.setValue(ti + 1, valC);
-					c.setValue(ti + 1, valC2);
-					return;
+			else if (valC2 == "B"){
+				return;
+			}
+
+			// Vermehrung
+			else if (valC == valC2) {
+
+				double v;
+				if (valC == "X") {
+					v = vX;
+				} else {
+					v = vO;
 				}
-				
-				// Vermehrung
-				else if (valC == valC2){
-					
-					double v;
-					if (valC == "X"){
-						v = vX;
-					}
-					else{
-						v = vO;
-					}
-					
-					if (d < v){
-						
-						List<Cell> neighbors2 = c2.getNeighbors(NeighborhoodIndex.NEIGH_4());
-						neighbors2.addAll(neighbors);
-						Collections.shuffle(neighbors2);
-	
-						for (int i = 0; i < neighbors2.size(); i++){
-							
-							if ((String) neighbors2.get(i).getValue(ti) == "."){
-								neighbors2.get(i).setValue(ti + 1, valC2);
-								//System.out.println("BREAK: "+ i + "   SIZE: "+ neighbors2.size());
-								return;
-							}
+
+				if (d < v) {
+
+					List<Cell> neighbors2 = c2.getNeighbors(NeighborhoodIndex.NEIGH_4());
+					neighbors2.addAll(neighbors);
+					Collections.shuffle(neighbors2);
+
+					for (int i = 0; i < neighbors2.size(); i++) {
+
+						if ((String) neighbors2.get(i).getValue(ti) == ".") {
+							neighbors2.get(i).setValue(ti + 1, valC2);
+							// System.out.println("BREAK: "+ i + " SIZE: "+
+							// neighbors2.size());
+							return;
 						}
 					}
 				}
-				
-				// Verdraengung
-				else if (valC2 != valC){
-					
-					double e;
-					if (valC == "X"){
-						e = eX;
-					}
-					else {
-						e = eO;
-					}
-					
-					if (d < e){
-						c2.setValue(ti + 1, valC);
-						c.setValue(ti + 1, ".");
-						return;
-					}
+			}
+
+			// Verdraengung
+			else if (valC2 != valC) {
+
+				double e;
+				if (valC == "X") {
+					e = eX;
+				} else {
+					e = eO;
+				}
+
+				if (d < e) {
+					c2.setValue(ti + 1, valC);
+					c.setValue(ti + 1, ".");
+					return;
 				}
 			}
-			return;
-			
-		//}
-		//c.setValue(ti + 1, "."); 			
+		}
+		return;	
 	}
 }
