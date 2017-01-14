@@ -13,7 +13,7 @@ public class MigrationExample
 {
 	
 	private static String filelocation ="/home/lukas/migration/";
-	private static String fileCSV=filelocation+"output.csv";
+	private static String fileCSV="output.csv";
 
 	public static void main(String[] args) throws Exception 
 	{

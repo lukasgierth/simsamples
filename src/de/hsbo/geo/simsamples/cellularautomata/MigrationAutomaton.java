@@ -303,7 +303,7 @@ public class MigrationAutomaton extends CellularAutomaton
 		final String NEW_LINE_SEPARATOR = "\n";
 
 		try {
-			fileWriter = new FileWriter(fileCSV, true);
+			fileWriter = new FileWriter(LOCATION+fileCSV, true);
 			// Write the CSV file header
 			// fileWriter.append(FILE_HEADER.toString());
 			// Add a new line separator after the header
