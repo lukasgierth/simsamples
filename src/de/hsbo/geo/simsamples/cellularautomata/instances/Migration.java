@@ -60,7 +60,7 @@ public class Migration extends TransitionFunction {
 		Collections.shuffle(neighbors);
 		
 		int n = 1;
-		if (nbrs < 5){
+		if (nbrs < 5 && nbrs > 0 && neighbors.size() >= nbrs){
 			n = nbrs;
 		}
 

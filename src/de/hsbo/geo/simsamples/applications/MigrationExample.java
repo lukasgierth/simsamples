@@ -26,13 +26,13 @@ public class MigrationExample
 		 */
 		
 		MigrationAutomaton a = 
-			new MigrationAutomaton(100, 100, new Migration(0.2, 1, 0.4, 0.7, 2));
+			new MigrationAutomaton(100, 100, new Migration(1, 1, 0.4, 0.4, 3));
 		
 		//a.enableConsoleDump();
 		a.initializeRandomly();
 		a.createCity(70,70,10,15,"O");
 		a.createCity(10,10,25,15,"X");
-		a.createBarrier(20,30,20,300);
+		a.createBarrier(35,35,20,20);
 		a.enableImageDump(500,10);
 		a.enableWriteCSV();
 		a.setFileCSV(fileCSV);

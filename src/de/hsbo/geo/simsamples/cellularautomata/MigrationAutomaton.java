@@ -93,6 +93,8 @@ public class MigrationAutomaton extends CellularAutomaton
 			int countX = 0;
 			int countO = 0;
 			int countP = 0;
+			double rows = this.nx;
+			double col = this.ny;
 
 			Cell[][] arr = ((RectangularSpace) this.getCellularSpace()).getCellArray();
 			for (int i = 0; i < this.nx; i++) {
@@ -107,9 +109,14 @@ public class MigrationAutomaton extends CellularAutomaton
 			}
 
 			if (this.consoleDump == true) {
-				System.out.println("Größe der Population X: " + countX + " Zellen| " + (countX / (nx * ny) * 100)
-						+ " %\n" + "Größe der Population O: " + countO + " Zellen| " + (countO / (nx * ny) * 100)
-						+ " %\n" + "Anzahl leerer Zellen: " + countP + " Zellen| " + (countP / (nx * ny) * 100)
+
+				int countXpercent = (int) (countX/(rows*col)*100);
+				int countOpercent = (int) (countO/(rows*col)*100);
+				int countPpercent = (int) (countP/(rows*col)*100);
+				
+				System.out.println("Größe der Population X: " + countX + " Zellen| " + countXpercent
+						+ " %\n" + "Größe der Population O: " + countO + " Zellen| " + countOpercent
+						+ " %\n" + "Anzahl leerer Zellen: " + countP + " Zellen| " + countPpercent
 						+ " %\n\n");
 
 			}
@@ -120,7 +127,7 @@ public class MigrationAutomaton extends CellularAutomaton
 
 			this.ti++;
 		}
-
+		
 		this.afterExecute();
 	}
 
@@ -290,7 +297,7 @@ public class MigrationAutomaton extends CellularAutomaton
 	private void writeCSV(int ti, int countX, int countO, int countP){
 		
 		FileWriter fileWriter = null;
-		final String FILE_HEADER = "timestep,countX,countO,countP";
+		//final String FILE_HEADER = "timestep,countX,countO,countP";
 		// Delimiter used in CSV file
 		final String COMMA_DELIMITER = ",";
 		final String NEW_LINE_SEPARATOR = "\n";
