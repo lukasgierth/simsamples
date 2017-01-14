@@ -1,5 +1,7 @@
 package de.hsbo.geo.simsamples.applications;
 
+import java.io.File;
+
 import de.hsbo.geo.simsamples.cellularautomata.MigrationAutomaton;
 import de.hsbo.geo.simsamples.cellularautomata.instances.Migration;
 
@@ -14,6 +16,7 @@ public class MigrationExample
 	
 	private static String filelocation ="/home/lukas/migration/";
 	private static String fileCSV="output.csv";
+	private static String simName="01/";
 
 	public static void main(String[] args) throws Exception 
 	{
@@ -25,18 +28,20 @@ public class MigrationExample
 		 * execute(number of steps)
 		 */
 		
+		new File(filelocation+simName).mkdirs();
+		
 		MigrationAutomaton a = 
-			new MigrationAutomaton(100, 100, new Migration(1, 1, 0.4, 0.4, 3));
+			new MigrationAutomaton(100, 100, new Migration(1, 0, 1, 0, 4));
 		
 		//a.enableConsoleDump();
 		a.initializeRandomly();
-		a.createCity(70,70,10,15,"O");
-		a.createCity(10,10,25,15,"X");
+		a.createCity(70,70,29,29,"O");
+		a.createCity(0,0,30,30,"X");
 		a.createBarrier(35,35,20,20);
 		a.enableImageDump(500,10);
 		a.enableWriteCSV();
 		a.setFileCSV(fileCSV);
-		a.setLocation(filelocation);
+		a.setLocation(filelocation+simName);
 		a.execute(25000);		
 	}
 }

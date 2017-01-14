@@ -125,6 +125,14 @@ public class MigrationAutomaton extends CellularAutomaton
 				writeCSV(ti, countX, countO, countP);
 			}
 
+			/*
+			 * Break when no empty cell left
+			 */
+			if (countP == 0){
+				System.out.println("BREAK");
+				break;
+			}
+			
 			this.ti++;
 		}
 		

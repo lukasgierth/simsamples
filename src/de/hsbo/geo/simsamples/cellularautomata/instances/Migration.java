@@ -59,9 +59,17 @@ public class Migration extends TransitionFunction {
 		List<Cell> neighbors = c.getNeighbors(NeighborhoodIndex.NEIGH_4());
 		Collections.shuffle(neighbors);
 		
-		int n = 1;
+		/*
+		 * watch nbrs neigbors or else -> all neighbors possible 
+		 */
+		
+		int n;
+		
 		if (nbrs < 5 && nbrs > 0 && neighbors.size() >= nbrs){
 			n = nbrs;
+		}
+		else{
+			n = neighbors.size();
 		}
 
 		for (int j = 0; j < n; j++) {
