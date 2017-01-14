@@ -22,12 +22,14 @@ public class Migration extends TransitionFunction {
 	double vO;
 	double eX;
 	double eO;
+	int nbrs;
 	
-	public Migration(double vX, double eX, double vO, double eO){
+	public Migration(double vX, double eX, double vO, double eO, int nbrs){
 		this.vX = vX;
 		this.vO = vO;
 		this.eX = eX;
 		this.eO = eO;
+		this.nbrs = nbrs;
 	}
 	
 	@Override
@@ -56,8 +58,13 @@ public class Migration extends TransitionFunction {
 		// Get 4 neighbors and shuffle them
 		List<Cell> neighbors = c.getNeighbors(NeighborhoodIndex.NEIGH_4());
 		Collections.shuffle(neighbors);
+		
+		int n = 1;
+		if (nbrs < 5){
+			n = nbrs;
+		}
 
-		for (int j = 0; j < neighbors.size(); j++) {
+		for (int j = 0; j < n; j++) {
 
 			Cell c2 = neighbors.get(j);
 			String valC2 = (String) c2.getValue(ti);

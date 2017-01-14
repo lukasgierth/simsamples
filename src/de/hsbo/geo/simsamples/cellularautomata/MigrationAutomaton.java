@@ -23,6 +23,8 @@ public class MigrationAutomaton extends CellularAutomaton
 	private String LOCATION;
 	private int IMG_RATE;
 	private int IMG_SCALE;
+	private boolean WriteCSV;
+	private String fileCSV;
 
 	/**
 	 * Constructor
@@ -110,7 +112,12 @@ public class MigrationAutomaton extends CellularAutomaton
 						+ " %\n" + "Anzahl leerer Zellen: " + countP + " Zellen| " + (countP / (nx * ny) * 100)
 						+ " %\n\n");
 
-			}			
+			}
+			
+			if (this.WriteCSV == true) {
+				writeCSV(ti, countX, countO, countP);
+			}
+
 			this.ti++;
 		}
 
@@ -205,7 +212,7 @@ public class MigrationAutomaton extends CellularAutomaton
 	}
 	
 	/*
-	 * 
+	 * Create densely populated city in cell field
 	 */
 	public void createCity(int startX, int startY, int length, int height, String population) throws Exception
 	{
@@ -239,7 +246,7 @@ public class MigrationAutomaton extends CellularAutomaton
 	}
 	
 	/*
-	 * 
+	 * Creates barrier inside the cell field 
 	 */
 	public void createBarrier(int startX, int startY, int length, int height) throws Exception
 	{	
@@ -272,13 +279,57 @@ public class MigrationAutomaton extends CellularAutomaton
 	  *  Addition
 	  *  Later integrate into CellularAutomaton???
 	  *  
+	  *  Only called internally
 	  *  
 	  */
 	
 	/*
+	 * CSV File Writer
+	 */
+	
+	private void writeCSV(int ti, int countX, int countO, int countP){
+		
+		FileWriter fileWriter = null;
+		final String FILE_HEADER = "timestep,countX,countO,countP";
+		// Delimiter used in CSV file
+		final String COMMA_DELIMITER = ",";
+		final String NEW_LINE_SEPARATOR = "\n";
+
+		try {
+			fileWriter = new FileWriter(fileCSV, true);
+			// Write the CSV file header
+			// fileWriter.append(FILE_HEADER.toString());
+			// Add a new line separator after the header
+			// fileWriter.append(NEW_LINE_SEPARATOR);
+
+			fileWriter.append(String.valueOf(ti));
+			fileWriter.append(COMMA_DELIMITER);
+			fileWriter.append(String.valueOf(countX));
+			fileWriter.append(COMMA_DELIMITER);
+			fileWriter.append(String.valueOf(countO));
+			fileWriter.append(COMMA_DELIMITER);
+			fileWriter.append(String.valueOf(countP));
+			fileWriter.append(NEW_LINE_SEPARATOR);
+
+		} catch (Exception e) {
+			System.out.println("Error in CsvFileWriter !!!");
+			e.printStackTrace();
+		} finally {
+			try {
+				fileWriter.flush();
+				fileWriter.close();
+			} catch (IOException e) {
+				System.out.println("Error while flushing/closing fileWriter !!!");
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
+	/*
 	 * Image Writer
 	 */
-	public void write_buffer_image (Graphics2D plot) throws Exception  {
+	private void write_buffer_image (Graphics2D plot) throws Exception  {
 		Cell[][] arr =((RectangularSpace) this.getCellularSpace()).getCellArray();
 		for (int i = 0; i < this.nx; i++) {
 			for (int j = 0; j < this.ny; j++) {
@@ -295,7 +346,7 @@ public class MigrationAutomaton extends CellularAutomaton
 	 }
 
 	
-	public void save_buffer_image (String filename) throws Exception {
+	private void save_buffer_image (String filename) throws Exception {
 		 BufferedImage img = new BufferedImage(this.nx,this.ny,BufferedImage.TYPE_INT_ARGB);
 		 write_buffer_image(img.createGraphics());
 	  
@@ -320,7 +371,7 @@ public class MigrationAutomaton extends CellularAutomaton
 	   
 	 		}
 
-	 public void save_image (String filename) {
+	 private void save_image (String filename) {
 	   try {
 	     save_buffer_image(filename);
 	   } catch (Exception ex) {
@@ -329,6 +380,7 @@ public class MigrationAutomaton extends CellularAutomaton
 	 }
 	 
 	/*
+	 * PUBLIC
 	 * Set location and enable ImageDump
 	*/
 	 public void setLocation(String loc) {
@@ -338,5 +390,11 @@ public class MigrationAutomaton extends CellularAutomaton
 		 this.IMAGEDUMP = true;
 		 this.IMG_RATE = rate;
 		 this.IMG_SCALE = scale;
+	 }
+	 public void enableWriteCSV(){
+		 this.WriteCSV = true;
+	 }
+	 public void setFileCSV(String fileCSV){
+		 this.fileCSV = fileCSV;
 	 }
 }
