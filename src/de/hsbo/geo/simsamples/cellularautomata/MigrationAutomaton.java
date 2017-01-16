@@ -134,7 +134,7 @@ public class MigrationAutomaton extends CellularAutomaton
 				/*
 				 * One last image dump
 				 */
-				if (this.IMAGEDUMP == true && this.ti % this.IMG_RATE == 0){
+				if (this.IMAGEDUMP == true && this.ti % this.IMG_RATE != 0){
 					String filename = String.format("%06d", this.ti);
 					save_image(LOCATION + filename);
 				}
