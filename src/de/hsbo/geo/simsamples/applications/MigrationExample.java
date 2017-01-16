@@ -16,7 +16,7 @@ public class MigrationExample
 	
 	private static String filelocation ="/home/lukas/migration/";
 	private static String fileCSV="output.csv";
-	private static String simName="01/";
+	private static String simName="04_barrier/";
 
 	public static void main(String[] args) throws Exception 
 	{
@@ -31,13 +31,16 @@ public class MigrationExample
 		new File(filelocation+simName).mkdirs();
 		
 		MigrationAutomaton a = 
-			new MigrationAutomaton(100, 100, new Migration(1, 0, 1, 0, 4));
+			new MigrationAutomaton(100, 100, new Migration(0.5, 0.5, 0.5, 0.5, 1));
+		
+		a.initializeRandomly();
 		
 		//a.enableConsoleDump();
-		a.initializeRandomly();
+		
 		a.createCity(70,70,29,29,"O");
 		a.createCity(0,0,30,30,"X");
 		a.createBarrier(35,35,20,20);
+		
 		a.enableImageDump(500,10);
 		a.enableWriteCSV();
 		a.setFileCSV(fileCSV);

@@ -129,7 +129,16 @@ public class MigrationAutomaton extends CellularAutomaton
 			 * Break when no empty cell left
 			 */
 			if (countP == 0){
-				System.out.println("BREAK");
+				System.out.println("Break after " + this.ti + " timesteps, no free cells available anymore");
+				
+				/*
+				 * One last image dump
+				 */
+				if (this.IMAGEDUMP == true && this.ti % this.IMG_RATE == 0){
+					String filename = String.format("%06d", this.ti);
+					save_image(LOCATION + filename);
+				}
+				
 				break;
 			}
 			
