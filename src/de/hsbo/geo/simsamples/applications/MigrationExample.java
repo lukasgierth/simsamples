@@ -16,7 +16,7 @@ public class MigrationExample
 	
 	private static String filelocation ="/home/lukas/migration/";
 	private static String fileCSV="output.csv";
-	private static String simName="04_barrier/";
+	private static String simName="AAAAA_test/";
 
 	public static void main(String[] args) throws Exception 
 	{
@@ -42,9 +42,8 @@ public class MigrationExample
 		a.createBarrier(35,35,20,20);
 		
 		a.enableImageDump(500,10);
-		a.enableWriteCSV();
-		a.setFileCSV(fileCSV);
+		//a.enableWriteFile();
 		a.setLocation(filelocation+simName);
-		a.execute(25000);		
+		a.execute(2500);		
 	}
 }
