@@ -15,12 +15,13 @@ import de.hsbo.geo.simsamples.cellularautomata.ExportTools;
  */
 public class MigrationAutomaton extends CellularAutomaton 
 {
-	private int nx, ny;
-	private boolean IMAGEDUMP;
 	private String LOCATION;
+	private int nx, ny;
 	private int IMG_RATE;
 	private int IMG_SCALE;
 	private boolean WRITE_FILE;
+	private boolean IMAGEDUMP;
+
 	/**
 	 * Constructor
 	 * 
@@ -53,7 +54,7 @@ public class MigrationAutomaton extends CellularAutomaton
 	 */
 	public MigrationAutomaton(
 		int nx, 
-		int ny, 
+		int ny,
 		TransitionFunction delta) 
 	{
 		this.cells = new RectangularSpace(nx, ny);
@@ -65,8 +66,6 @@ public class MigrationAutomaton extends CellularAutomaton
 	@Override
 	public void execute(int numberOfSteps) throws Exception 
 	{
-		
-		
 		this.numberOfSteps = numberOfSteps;
 		this.beforeExecute();
 		
@@ -74,7 +73,6 @@ public class MigrationAutomaton extends CellularAutomaton
 			this.initialize();
 		}
 
-		
 			// Then step through time:
 		for (int ti = 0; ti <= numberOfSteps; ti++) {
 
@@ -103,6 +101,9 @@ public class MigrationAutomaton extends CellularAutomaton
 				}
 			}
 
+			/*
+			 * Console Dump if enabled 
+			 */
 			if (this.consoleDump == true) {
 
 				int countXpercent = (int) (countX/(rows*col)*100);
@@ -113,9 +114,11 @@ public class MigrationAutomaton extends CellularAutomaton
 						+ " %\n" + "Größe der Population O: " + countO + " Zellen| " + countOpercent
 						+ " %\n" + "Anzahl leerer Zellen: " + countP + " Zellen| " + countPpercent
 						+ " %\n\n");
-
 			}
 			
+			/*
+			 * Write information to file
+			 */
 			if (this.WRITE_FILE == true) {
 				String line = ti+","+countX+","+countO+","+countP;
 				saveFile(line);
@@ -147,8 +150,7 @@ public class MigrationAutomaton extends CellularAutomaton
 	// better performance than those offered by the base class.
 
 	@Override
-	public void step() throws Exception 
-	{
+	public void step() throws Exception {
 		
 		this.delta.beforeStep(this.ti);
 
@@ -162,18 +164,18 @@ public class MigrationAutomaton extends CellularAutomaton
 		this.delta.step(this.ti);
 		
 		/*
-		 * Make screenshot every n steps and last image
+		 * Save image of current state every n-defined steps and last image
 		 */
 		if (this.IMAGEDUMP == true && (this.ti % this.IMG_RATE == 0 || this.ti == this.numberOfSteps )){
 			saveImage();
-		}
-	
-		// Step for automaton, could be implemented as empty function!
-		 
+		}	 
 	}
 
+	/*
+	 * Initialize the cell field 
+	 */
 	@Override
-	public void initializeRandomly() throws Exception 
+	public void initializeRandomly()
 	{
 		Cell[][] arr = ((RectangularSpace) this.cells).getCellArray();
 		for (int i = 0; i < this.nx; i++) {
@@ -187,42 +189,6 @@ public class MigrationAutomaton extends CellularAutomaton
 						Object val = ".";
 						arr[i][j].setInitialValue(val);
 				}
-			}
-		}
-		this.initialized = true;
-	}
-
-	@Override
-	public void initializeRandomly(Object... vals) throws Exception 
-	{
-		if (vals.length == 1) {
-			this.initializeWith(vals[0]);
-			return;
-		}
-		Cell[][] arr = ((RectangularSpace) this.cells).getCellArray();
-		for (int i = 0; i < this.nx; i++) {
-			for (int j = 0; j < this.ny; j++) {
-				
-				if (this.stateSet instanceof DiscreteStateSet && ((i%2==0 && j%2==0)||(i%2!=0 && j%2!=0))) {
-					Object val = RandomValueGenerator.chooseRandomly("X","O");
-					arr[i][j].setInitialValue(val);
-				}
-				else if (this.stateSet instanceof DiscreteStateSet){
-						Object val = ".";
-						arr[i][j].setInitialValue(val);
-				}
-			}
-		}
-		this.initialized = true;
-	}
-
-	@Override
-	public void initializeWith(Object val) throws Exception 
-	{
-		Cell[][] arr = ((RectangularSpace) this.cells).getCellArray();
-		for (int i = 0; i < this.nx; i++) {
-			for (int j = 0; j < this.ny; j++) {
-				arr[i][j].setInitialValue(val); 
 			}
 		}
 		this.initialized = true;
@@ -231,7 +197,7 @@ public class MigrationAutomaton extends CellularAutomaton
 	/*
 	 * Create densely populated city in cell field
 	 */
-	public void createCity(int startX, int startY, int length, int height, String population) throws Exception
+	public void createCity(int startX, int startY, int length, int height, String population)
 	{
 		if (population == "X" || population == "O"){
 			if ((startX+length) < this.nx && (startY+height) < this.ny){
@@ -265,7 +231,7 @@ public class MigrationAutomaton extends CellularAutomaton
 	/*
 	 * Creates barrier inside the cell field 
 	 */
-	public void createBarrier(int startX, int startY, int length, int height) throws Exception
+	public void createBarrier(int startX, int startY, int length, int height)
 	{	
 		if ((startX+length) < this.nx && (startY+height) < this.ny){
 			Cell[][] arr = ((RectangularSpace) this.cells).getCellArray();
@@ -314,7 +280,6 @@ public class MigrationAutomaton extends CellularAutomaton
 		colors[3] = Color.BLACK;
 		
 		exptools.save_image(LOCATION, filename, this.IMG_SCALE, this.ti, this.getCellularSpace(), this.nx, this.ny, states, colors);
-		
 	}
 	
 	/*
@@ -329,7 +294,7 @@ public class MigrationAutomaton extends CellularAutomaton
 	
 	/*
 	 * PUBLIC
-	 * Set location and enable ImageDump
+	 * Set location and enable ImageDump, WriteFile
 	*/
 	 public void setLocation(String location) {
 		 this.LOCATION = location;

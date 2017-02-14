@@ -29,7 +29,7 @@ public class ExportTools {
 			final String NEW_LINE_SEPARATOR = "\n";
 	
 			try {
-				fileWriter = new FileWriter(location, true);
+				fileWriter = new FileWriter(location+"output.csv", true);
 				fileWriter.append(linecontent);
 				fileWriter.append(NEW_LINE_SEPARATOR);
 	
@@ -71,20 +71,29 @@ public class ExportTools {
 		for (int i = 0; i < nx; i++) {
 			for (int j = 0; j < ny; j++) {
 				for (int k = 0; k < states.length; k++){
+					try {
 				     if (arr[i][j].getValue(ti) == states[k]){
 				    	 plot.setColor(colors[k]);
 				    	 plot.fillRect(j, i, 1, 1);
 				     }
+					} catch (Exception ex) {
+						throw new Exception("Get cell value and set Color Failed!");
+					}
 				}
 			}
 		}
 	 }
 
 	
-	private void save_buffer_image (String filename, int scale, int ti, CellularSpace sp, int nx, int ny, String[] states, Color[] colors) throws Exception {
+	private void save_buffer_image (String filename, int scale, int ti, CellularSpace sp, int nx, int ny, String[] states, Color[] colors) throws Exception{
 		 BufferedImage img = new BufferedImage(nx, ny, BufferedImage.TYPE_INT_ARGB);
-		 write_buffer_image(img.createGraphics(), ti, sp, nx, ny, states, colors);
-	  
+		 
+		 try {
+			write_buffer_image(img.createGraphics(), ti, sp, nx, ny, states, colors);
+		 } catch (Exception ex) {
+			 throw new Exception("Write Buffer Failed!");
+		 }
+		
 		 BufferedImage bi = new BufferedImage(scale * img.getWidth(null),
                                              scale * img.getHeight(null),
                                              BufferedImage.TYPE_INT_ARGB);
