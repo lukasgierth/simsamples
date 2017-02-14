@@ -1,5 +1,6 @@
 package de.hsbo.geo.simsamples.cellularautomata;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -50,9 +51,9 @@ public class ExportTools {
 	/*
 	 * Save current state as image
 	 */
-	 public void save_image (String location, String filename, int scale, int ti, CellularSpace sp, int nx, int ny) {
+	 public void save_image (String location, String filename, int scale, int ti, CellularSpace sp, int nx, int ny, String[] states, Color[] colors) {
 		   try {
-		     save_buffer_image(location + filename, scale, ti, sp, nx, ny);
+		     save_buffer_image(location + filename, scale, ti, sp, nx, ny, states, colors);
 		   } catch (Exception ex) {
 		     System.exit(1);
 		   }
@@ -65,25 +66,24 @@ public class ExportTools {
 	 * 
 	 */
 
-	private void write_buffer_image (Graphics2D plot, int ti, CellularSpace sp, int nx, int ny) throws Exception  {
+	private void write_buffer_image (Graphics2D plot, int ti, CellularSpace sp, int nx, int ny, String[] states, Color[] colors) throws Exception  {
 		Cell[][] arr = ((RectangularSpace) sp).getCellArray();
 		for (int i = 0; i < nx; i++) {
 			for (int j = 0; j < ny; j++) {
-
-	     if (arr[i][j].getValue(ti) == "X") plot.setColor(new java.awt.Color( 255, 0, 0)); else
-	     if (arr[i][j].getValue(ti) == "O") plot.setColor(new java.awt.Color(0, 0, 255)); else
-	     if (arr[i][j].getValue(ti) == ".") plot.setColor(new java.awt.Color(220, 220, 220)); else
-		 if (arr[i][j].getValue(ti) == "B") plot.setColor(new java.awt.Color(0, 0, 0)); else
-	     plot.setColor(new java.awt.Color(0, 0, 0));
-	     plot.fillRect(j, i, 1, 1);
+				for (int k = 0; k < states.length; k++){
+				     if (arr[i][j].getValue(ti) == states[k]){
+				    	 plot.setColor(colors[k]);
+				    	 plot.fillRect(j, i, 1, 1);
+				     }
+				}
 			}
 		}
 	 }
 
 	
-	private void save_buffer_image (String filename, int scale, int ti, CellularSpace sp, int nx, int ny) throws Exception {
+	private void save_buffer_image (String filename, int scale, int ti, CellularSpace sp, int nx, int ny, String[] states, Color[] colors) throws Exception {
 		 BufferedImage img = new BufferedImage(nx, ny, BufferedImage.TYPE_INT_ARGB);
-		 write_buffer_image(img.createGraphics(), ti, sp, nx, ny);
+		 write_buffer_image(img.createGraphics(), ti, sp, nx, ny, states, colors);
 	  
 		 BufferedImage bi = new BufferedImage(scale * img.getWidth(null),
                                              scale * img.getHeight(null),

@@ -1,6 +1,9 @@
 package de.hsbo.geo.simsamples.cellularautomata;
 
 import de.hsbo.geo.simsamples.common.RandomValueGenerator;
+
+import java.awt.Color;
+
 import de.hsbo.geo.simsamples.cellularautomata.ExportTools;
 
 
@@ -295,7 +298,22 @@ public class MigrationAutomaton extends CellularAutomaton
 		
 		ExportTools exptools = new ExportTools();
 		String filename = String.format("%06d", this.ti);
-		exptools.save_image(LOCATION, filename, this.IMG_SCALE, this.ti, this.getCellularSpace(), this.nx, this.ny);
+		
+		//Define States in String Array
+		String[] states = new String[4];
+		states[0] = "X";
+		states[1] = "O";
+		states[2] = ".";
+		states[3] = "B";
+		
+		//Define Colors in Color Array
+		java.awt.Color[] colors = new java.awt.Color[4];
+		colors[0] = Color.RED;
+		colors[1] = Color.BLUE;
+		colors[2] = Color.WHITE;
+		colors[3] = Color.BLACK;
+		
+		exptools.save_image(LOCATION, filename, this.IMG_SCALE, this.ti, this.getCellularSpace(), this.nx, this.ny, states, colors);
 		
 	}
 	
