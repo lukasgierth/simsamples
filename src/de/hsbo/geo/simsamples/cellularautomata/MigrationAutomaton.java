@@ -198,32 +198,17 @@ public class MigrationAutomaton extends CellularAutomaton
 	 * Create densely populated city in cell field
 	 */
 	public void createCity(int startX, int startY, int length, int height, String population)
-	{
-		if (population == "X" || population == "O"){
-			if ((startX+length) < this.nx && (startY+height) < this.ny){
-				Cell[][] arr = ((RectangularSpace) this.cells).getCellArray();
-				for (int i = startX; i <= startX+length; i++) {
-					for (int j = startY; j <= startY+height; j++) {
-						arr[i][j].setInitialValue(population);
-					}
+	{		
+				try {
+					Cell[][] arr = ((RectangularSpace) this.cells).getCellArray();
+					for (int i = startX; i <= startX + length; i++) {
+						for (int j = startY; j <= startY + height; j++) {
+							arr[i][j].setInitialValue(population);
+						}
+					} 
+				} catch (Exception e) {
+					System.out.println("Exception: Out Of Bounds/ Wrong Population named - "+ e );
 				}
-			}
-			
-			else{
-				System.out.println("City out of bounds\nSet default city 5x5 bottomright");
-				
-				Cell[][] arr = ((RectangularSpace) this.cells).getCellArray();
-				for (int i = (this.nx-10); i <=(this.nx-5) ; i++) {
-					for (int j = (this.ny-10); j <= (this.ny-5); j++) {
-						arr[i][j].setInitialValue(population);
-					}
-				}
-			}
-		}
-		
-		else {
-			System.out.println("POPULATION "+population + " UNKNOW");
-		}
 		
 		this.initialized = true;	
 	}
@@ -233,26 +218,16 @@ public class MigrationAutomaton extends CellularAutomaton
 	 */
 	public void createBarrier(int startX, int startY, int length, int height)
 	{	
-		if ((startX+length) < this.nx && (startY+height) < this.ny){
-			Cell[][] arr = ((RectangularSpace) this.cells).getCellArray();
-			for (int i = startX; i <= startX+length; i++) {
-				for (int j = startY; j <= startY+height; j++) {
-					arr[i][j].setInitialValue("B");
+			try {
+				Cell[][] arr = ((RectangularSpace) this.cells).getCellArray();
+				for (int i = startX; i <= startX + length; i++) {
+					for (int j = startY; j <= startY + height; j++) {
+						arr[i][j].setInitialValue("B");
+					}
+				} 
+			} catch (Exception e) {
+				System.out.println("Exception: Out Of Bounds - "+e);	
 				}
-			}
-		}
-		
-		else{
-			System.out.println("Barrier out of bounds\nSet default barrier 10x10 centered");
-			
-			Cell[][] arr = ((RectangularSpace) this.cells).getCellArray();
-			for (int i = (this.nx/2-5); i <= (this.nx/2+5); i++) {
-				for (int j = (this.ny/2-5); j <= (this.ny/2+5); j++) {
-					arr[i][j].setInitialValue("B");
-				}
-			}
-		}
-		
 		this.initialized = true;
 	}
 
