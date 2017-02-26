@@ -9,30 +9,29 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+/**
+ * Implementation of tools to export data from cellularautomata
+ * @author Matthias Hensen, Lukas Gierth
+ */
+
 public class ExportTools {
-	
+
 	public ExportTools(){}
-	
+
 	/*
-	 * 
-	 * PUBLIC
-	 * 
-	 * 
-	 */
-	
-	/*
+	 * @author Matthias Hensen
 	 * write a content line into a file
 	 */
 	public void writeIntoFile(String linecontent, String location){
-			
+
 			FileWriter fileWriter = null;
 			final String NEW_LINE_SEPARATOR = "\n";
-	
+
 			try {
 				fileWriter = new FileWriter(location+"output.csv", true);
 				fileWriter.append(linecontent);
 				fileWriter.append(NEW_LINE_SEPARATOR);
-	
+
 			} catch (Exception e) {
 				System.out.println("Error in CsvFileWriter !!!");
 				e.printStackTrace();
@@ -45,10 +44,11 @@ public class ExportTools {
 					e.printStackTrace();
 				}
 			}
-			
+
 		}
 
 	/*
+	 * @author Lukas Gierth
 	 * Save current state as image
 	 */
 	 public void save_image (String location, String filename, int scale, int ti, CellularSpace sp, int nx, int ny, String[] states, Color[] colors) {
@@ -59,13 +59,9 @@ public class ExportTools {
 		   }
 		 }
 
-	/*
-	 * 
-	 * PRIVATE
-	 * 
-	 * 
-	 */
-
+	 /*
+	  * @author Matthias Hensen (base), Lukas Gierth (modifications)
+	  */
 	private void write_buffer_image (Graphics2D plot, int ti, CellularSpace sp, int nx, int ny, String[] states, Color[] colors) throws Exception  {
 		Cell[][] arr = ((RectangularSpace) sp).getCellArray();
 		for (int i = 0; i < nx; i++) {
@@ -84,16 +80,19 @@ public class ExportTools {
 		}
 	 }
 
-	
+
+	/*
+	 * @author Matthias Hensen
+	 */
 	private void save_buffer_image (String filename, int scale, int ti, CellularSpace sp, int nx, int ny, String[] states, Color[] colors) throws Exception{
 		 BufferedImage img = new BufferedImage(nx, ny, BufferedImage.TYPE_INT_ARGB);
-		 
+
 		 try {
 			write_buffer_image(img.createGraphics(), ti, sp, nx, ny, states, colors);
 		 } catch (Exception ex) {
 			 throw new Exception("Write Buffer Failed!");
 		 }
-		
+
 		 BufferedImage bi = new BufferedImage(scale * img.getWidth(null),
                                              scale * img.getHeight(null),
                                              BufferedImage.TYPE_INT_ARGB);
@@ -108,5 +107,5 @@ public class ExportTools {
 			   } catch (Exception ex) {
 			     throw new Exception("Save image failed!");
 			   }
-	 }	
+	 }
 }

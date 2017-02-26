@@ -12,18 +12,18 @@ import de.hsbo.geo.simsamples.common.RandomValueGenerator;
 
 /**
  * Transition functions for "MigrationExample"
- * 
+ *
  * @author Lukas Gierth, Matthias Hensen
  */
 
 public class Migration extends TransitionFunction {
-	
+
 	double vX;
 	double vO;
 	double eX;
 	double eO;
 	int nbrs;
-	
+
 	public Migration(double vX, double eX, double vO, double eO, int nbrs){
 		this.vX = vX;
 		this.vO = vO;
@@ -31,40 +31,42 @@ public class Migration extends TransitionFunction {
 		this.eO = eO;
 		this.nbrs = nbrs;
 	}
-	
+
 	@Override
 	public void defineStates() {
-		
+
 		// Define states: blank, population X, population Y, barrier B
 		this.states = new DiscreteStateSet(".", "X", "O", "B");
 	}
 
 	@Override
 	public void step(int ti) throws Exception{
-		
+
+		// Get random cell from CellularSpace
 		RectangularSpace sp = (RectangularSpace) this.getAutomaton().getCellularSpace();
 		int row = RandomValueGenerator.number(0, sp.numberOfRows() - 1);
-		int column = RandomValueGenerator.number(0, sp.numberOfColumns() - 1);	
+		int column = RandomValueGenerator.number(0, sp.numberOfColumns() - 1);
 	    Cell c = sp.getCell(row, column);
 		String valC = (String) c.getValue(ti);
-		
+
+		// Get different cell while Cell is empty or barrier
 		while (valC == "." || valC == "B"){
 			row = RandomValueGenerator.number(0, sp.numberOfRows() - 1);
 			column = RandomValueGenerator.number(0, sp.numberOfColumns() - 1);
 			c = sp.getCell(row, column);
 			valC = (String) c.getValue(ti);
 		}
-			
+
 		// Get 4 neighbors and shuffle them
 		List<Cell> neighbors = c.getNeighbors(NeighborhoodIndex.NEIGH_4());
 		Collections.shuffle(neighbors);
-		
+
 		/*
-		 * watch nbrs neigbors or else -> all neighbors possible 
+		 * watch nbrs neigbors or else -> all neighbors possible
 		 */
-		
+
 		int n;
-		
+
 		if (nbrs < 5 && nbrs > 0 && neighbors.size() >= nbrs){
 			n = nbrs;
 		}
@@ -86,7 +88,7 @@ public class Migration extends TransitionFunction {
 				c.setValue(ti + 1, valC2);
 				return;
 			}
-			
+
 			else if (valC2 == "B"){
 				return;
 			}
@@ -136,6 +138,6 @@ public class Migration extends TransitionFunction {
 				}
 			}
 		}
-		return;	
+		return;
 	}
 }
